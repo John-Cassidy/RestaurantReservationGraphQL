@@ -12,8 +12,4 @@
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mutation\" />
-  </ItemGroup>
-
 </Project>

@@ -2,6 +2,7 @@ using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
 using RestaurantReservationAPI.Interfaces;
+using RestaurantReservationAPI.Mutation;
 using RestaurantReservationAPI.Query;
 using RestaurantReservationAPI.Schema;
 using RestaurantReservationAPI.Services;
@@ -19,6 +20,10 @@ public class Program
         builder.Services.AddTransient<IMenuRepository, MenuRepository>();
         builder.Services.AddTransient<MenuType>();
         builder.Services.AddTransient<MenuQuery>();
+        builder.Services.AddTransient<MenuMutation>();
+
+        builder.Services.AddTransient<MenuInputType>();
+
         builder.Services.AddTransient<ISchema, MenuSchema>();
 
         builder.Services.AddGraphQL(config =>

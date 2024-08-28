@@ -3,7 +3,8 @@ using RestaurantReservationAPI.Models;
 
 namespace RestaurantReservationAPI.Services;
 
-public class MenuRepository : IMenuRepository {
+public class MenuRepository : IMenuRepository
+{
 
     private static List<Menu> MenuList = new List<Menu>()
     {
@@ -14,25 +15,30 @@ public class MenuRepository : IMenuRepository {
         new Menu() { Id = 5, Name = "Chocolate Brownie Sundae", Description = "Warm chocolate brownie with ice cream and fudge", Price = 6.99 },
     };
 
-    public Menu AddMenu(Menu menu) {
+    public Menu AddMenu(Menu menu)
+    {
         MenuList.Add(menu);
         return menu;
     }
 
-    public void DeleteMenu(int id) {
+    public void DeleteMenu(int id)
+    {
         MenuList.Remove(MenuList.FirstOrDefault(x => x.Id == id));
     }
 
-    public List<Menu> GetAllMenu() {
+    public List<Menu> GetAllMenu()
+    {
         return MenuList;
     }
 
-    public Menu GetMenuById(int id) {
+    public Menu GetMenuById(int id)
+    {
         return MenuList.FirstOrDefault(x => x.Id == id);
     }
 
-    public Menu UpdateMenu(Menu menu) {
-        MenuList[MenuList.FindIndex(x => x.Id == menu.Id)] = menu;
+    public Menu UpdateMenu(int id, Menu menu)
+    {
+        MenuList[MenuList.FindIndex(x => x.Id == id)] = menu;
         return menu;
     }
 }

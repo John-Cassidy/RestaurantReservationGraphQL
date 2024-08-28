@@ -36,4 +36,48 @@ query GetMenuById{
   }
 }
 
+mutation AddMenu($menu:MenuInput){
+  createMenu(menu:$menu){
+    id
+    name
+    price
+    description
+  }
+}
+query variable
+{
+  "menu":{
+    "id":6,
+    "name":"Green Tea",
+    "price": 8.5,
+    "description": "Sugar free green tea with lemon zest"
+  }
+}
+
+mutation UpdateMenu($menuId:Int, $menu:MenuInput){
+  updateMenu(menuId:$menuId, menu:$menu){
+    id
+    name
+    price
+    description
+  }
+}
+query variables
+{
+  "menuId":6,
+  "menu":{
+    "id":6,
+    "name":"Black Tea",
+    "price": 9.5,
+    "description": "Sugar free black tea"
+  }
+}
+
+mutation DeleteMenu($menuId:Int){
+  deleteMenu(menuId:$menuId)
+}
+query variable
+{
+  "menuId":6
+}
 ```
