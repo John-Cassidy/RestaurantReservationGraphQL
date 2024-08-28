@@ -6,4 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="graphiql" Version="2.0.0" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mutation\" />
+    <Folder Include="Query\" />
+    <Folder Include="Schema\" />
+    <Folder Include="Type\" />
+  </ItemGroup>
+
 </Project>
