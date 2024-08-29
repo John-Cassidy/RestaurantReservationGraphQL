@@ -1,44 +1,62 @@
-﻿using RestaurantReservationAPI.Interfaces;
+﻿using RestaurantReservationAPI.Data;
+using RestaurantReservationAPI.Interfaces;
 using RestaurantReservationAPI.Models;
 
 namespace RestaurantReservationAPI.Services;
 
 public class MenuRepository : IMenuRepository
 {
+    private readonly RestaurantDbContext _restaurantDbContext;
 
-    private static List<Menu> MenuList = new List<Menu>()
+    public MenuRepository(RestaurantDbContext restaurantDbContext)
     {
-        new Menu() { Id = 1, Name = "Classic Burger", Description="A juicy chicken burger with lettuce and cheese" , Price = 8.99},
-        new Menu() { Id = 2, Name = "Margherita Pizza", Description = "Tomato, mozzarella, and basil pizza", Price = 10.50 },
-        new Menu() { Id = 3, Name = "Grilled Chicken Salad", Description = "Fresh garden salad with grilled chicken", Price = 7.95 },
-        new Menu() { Id = 4, Name = "Pasta Alfredo", Description = "Creamy Alfredo sauce with fettuccine pasta", Price = 12.75 },
-        new Menu() { Id = 5, Name = "Chocolate Brownie Sundae", Description = "Warm chocolate brownie with ice cream and fudge", Price = 6.99 },
-    };
+        _restaurantDbContext = restaurantDbContext;
+    }
+
 
     public Menu AddMenu(Menu menu)
     {
-        MenuList.Add(menu);
+        _restaurantDbContext.Add(menu);
+        _restaurantDbContext.SaveChanges();
         return menu;
     }
 
     public void DeleteMenu(int id)
     {
-        MenuList.Remove(MenuList.FirstOrDefault(x => x.Id == id));
+        var menuToDelete = _restaurantDbContext.Menus.FirstOrDefault(x => x.Id == id);
+
+        if (menuToDelete != null)
+        {
+            _restaurantDbContext.Remove(menuToDelete);
+            _restaurantDbContext.SaveChanges();
+        }
     }
 
     public List<Menu> GetAllMenu()
     {
-        return MenuList;
+        return _restaurantDbContext.Menus.ToList();
     }
 
     public Menu GetMenuById(int id)
     {
-        return MenuList.FirstOrDefault(x => x.Id == id);
+        return _restaurantDbContext.Menus.FirstOrDefault(x => x.Id == id);
     }
 
     public Menu UpdateMenu(int id, Menu menu)
     {
-        MenuList[MenuList.FindIndex(x => x.Id == id)] = menu;
+        // get the menu by id
+        var menuToUpdate = _restaurantDbContext.Menus.FirstOrDefault(x => x.Id == id);
+
+        // if menueToUpdate is not null, update the menu
+        if (menuToUpdate != null)
+        {
+            menuToUpdate.Name = menu.Name;
+            menuToUpdate.Description = menu.Description;
+            menuToUpdate.Price = menu.Price;
+
+            _restaurantDbContext.SaveChanges();
+        }
+
         return menu;
     }
 }

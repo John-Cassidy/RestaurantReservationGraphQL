@@ -1,7 +1,11 @@
 using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
+using Microsoft.EntityFrameworkCore;
+using Polly;
+using RestaurantReservationAPI.Data;
 using RestaurantReservationAPI.Interfaces;
+using RestaurantReservationAPI.Models;
 using RestaurantReservationAPI.Mutation;
 using RestaurantReservationAPI.Query;
 using RestaurantReservationAPI.Schema;
@@ -12,7 +16,7 @@ namespace RestaurantReservationAPI;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +33,20 @@ public class Program
         builder.Services.AddGraphQL(config =>
             config.AddAutoSchema<ISchema>().AddSystemTextJson());
 
+        builder.Services.AddDbContext<RestaurantDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("RestaurantConnectionString")));
+
         builder.Services.AddControllers();
 
         var app = builder.Build();
+
+        // Ensure migrations are applied and database is seeded.
+        app.Lifetime.ApplicationStarted.Register(async () =>
+        {
+            await Policy.Handle<TimeoutException>()
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(10))
+                .ExecuteAndCaptureAsync(async () => await ApplyMigrationsAndSeedDatabaseAsync(app));
+        });
 
         // Configure the HTTP request pipeline.
 
@@ -42,9 +57,35 @@ public class Program
 
         app.UseAuthorization();
 
-
         app.MapControllers();
 
-        app.Run();
+        await app.RunAsync();
+
+    }
+
+    private static async Task ApplyMigrationsAndSeedDatabaseAsync(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<RestaurantDbContext>();
+
+            // Apply migrations
+            await context.Database.MigrateAsync();
+
+            // Seed database
+            if (!context.Menus.Any())
+            {
+                context.Menus.AddRange(new List<Menu>
+                {
+                    new Menu { Name = "Classic Burger", Description = "A juicy chicken burger with lettuce and cheese", Price = 8.99 },
+                    new Menu { Name = "Margherita Pizza", Description = "Tomato, mozzarella, and basil pizza", Price = 10.50 },
+                    new Menu { Name = "Grilled Chicken Salad", Description = "Fresh garden salad with grilled chicken", Price = 7.95 },
+                    new Menu { Name = "Pasta Alfredo", Description = "Creamy Alfredo sauce with fettuccine pasta", Price = 12.75 },
+                    new Menu { Name = "Chocolate Brownie Sundae", Description = "Warm chocolate brownie with ice cream and fudge", Price = 6.99 }
+                });
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

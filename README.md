@@ -90,3 +90,13 @@ docker compose -f docker-compose.yml up -d
 # NOTE: STOP RUNNING CONTAINERS AND REMOVE CONTAINERS
 docker compose -f docker-compose.yml down
 ```
+
+### Create Database Migrations
+
+```powershell
+dotnet ef migrations add InitialCreate -p RestaurantReservationAPI -s RestaurantReservationAPI -o Data\Migrations
+
+dotnet ef migrations remove -p RestaurantReservationAPI -s RestaurantReservationAPI
+
+dotnet ef database update -s RestaurantReservationAPI
+```
