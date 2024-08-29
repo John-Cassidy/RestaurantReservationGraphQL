@@ -10,5 +10,7 @@ public class RestaurantDbContext : DbContext
     {
     }
 
+    public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<Category> Categories { get; set; }
     public DbSet<Menu> Menus { get; set; }
 }

@@ -100,3 +100,5 @@ dotnet ef migrations remove -p RestaurantReservationAPI -s RestaurantReservation
 
 dotnet ef database update -s RestaurantReservationAPI
 ```
+
+## Restaurant Categories, Reservations

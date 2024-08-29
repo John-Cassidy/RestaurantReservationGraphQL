@@ -21,14 +21,24 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+
+        builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
+        builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
         builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+
         builder.Services.AddTransient<MenuType>();
+        builder.Services.AddTransient<CategoryType>();
+        builder.Services.AddTransient<ReservationType>();
+
         builder.Services.AddTransient<MenuQuery>();
-        builder.Services.AddTransient<MenuMutation>();
+        builder.Services.AddTransient<CategoryQuery>();
+        builder.Services.AddTransient<ReservationQuery>();
+        builder.Services.AddTransient<RootQuery>();
 
-        builder.Services.AddTransient<MenuInputType>();
+        // builder.Services.AddTransient<MenuMutation>();
+        // builder.Services.AddTransient<MenuInputType>();
 
-        builder.Services.AddTransient<ISchema, MenuSchema>();
+        builder.Services.AddTransient<ISchema, RootSchema>();
 
         builder.Services.AddGraphQL(config =>
             config.AddAutoSchema<ISchema>().AddSystemTextJson());

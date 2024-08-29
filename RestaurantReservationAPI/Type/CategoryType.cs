@@ -4,15 +4,12 @@ using RestaurantReservationAPI.Models;
 
 namespace RestaurantReservationAPI.Type;
 
-public class MenuType : ObjectGraphType<Menu>
+public class CategoryType : ObjectGraphType<Category>
 {
-    public MenuType()
+    public CategoryType()
     {
         Field(x => x.Id);
         Field(x => x.Name);
-        Field(x => x.Description);
-        Field(x => x.Price);
         Field(x => x.ImageUrl);
-        Field(x => x.CategoryId);
     }
 }
