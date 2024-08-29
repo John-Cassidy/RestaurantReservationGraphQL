@@ -91,7 +91,7 @@ docker compose -f docker-compose.yml up -d
 docker compose -f docker-compose.yml down
 ```
 
-### Create Database Migrations
+### Create Database Migrations for Menus, Categories, Reservations
 
 ```powershell
 dotnet ef migrations add InitialCreate -p RestaurantReservationAPI -s RestaurantReservationAPI -o Data\Migrations
@@ -101,4 +101,43 @@ dotnet ef migrations remove -p RestaurantReservationAPI -s RestaurantReservation
 dotnet ef database update -s RestaurantReservationAPI
 ```
 
-## Restaurant Categories, Reservations
+## Updated GraphQL Queries
+
+```json
+query {
+  categoryQuery{
+    categories{
+      id
+      name
+      imageUrl
+    }
+  }
+}
+
+query {
+  reservationQuery{
+    reservations{
+      id
+      customerName
+      email
+      phoneNumber
+      partySize
+      specialRequest
+      reservationDate
+    }
+  }
+}
+
+query {
+  menuQuery{
+    menus{
+      id
+      name
+      description
+      price
+      imageUrl
+      categoryId
+    }
+  }
+}
+```
