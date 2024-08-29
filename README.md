@@ -141,6 +141,19 @@ query {
   }
 }
 
+query{
+  menuQuery{
+    menu(menuId:5){
+      id
+      name
+      description
+      price
+      imageUrl
+      categoryId
+    }
+  }
+}
+
 query {
   categoryQuery{
     categories{
@@ -155,6 +168,91 @@ query {
         imageUrl
       }
     }
+  }
+}
+
+query{
+  menuQuery{
+    menu(menuId:5){
+      id
+      name
+      description
+      price
+      imageUrl
+      categoryId
+    }
+  }
+}
+
+mutation UpdateMenu($menuId:Int, $menu:MenuInput){
+  menuMutation{
+    updateMenu(menuId:$menuId, menu:$menu){
+        id
+        name
+        description
+        price
+        imageUrl
+        categoryId
+      }
+  }
+}
+query variables
+{
+  "menuId":5,
+  "menu":{
+    "id":5,
+    "name":"Chocolate Brownie Sundae",
+    "description": "Warm chocolate brownie with vanilla ice cream and fudge",
+    "price": 7.50,
+    "imageUrl": "https://example.com/chocolate-brownie-sundae.jpg",
+    "categoryId": 3
+  }
+}
+
+
+mutation AddMenu($menu:MenuInput){
+  menuMutation{
+    createMenu(menu:$menu){
+        name
+        description
+        price
+        imageUrl
+        categoryId
+      }
+  }
+}
+query variables
+{
+  "menu":{
+    "name":"Apple Pie",
+    "description": "Warm Apple Pie with homemade crust",
+    "price": 10.50,
+    "imageUrl": "https://example.com/apple-pie.jpg",
+    "categoryId": 3
+  }
+}
+
+mutation AddReservation($reservation:ReservationInput){
+  reservationMutation{
+    createReservation(reservation:$reservation){
+      customerName
+      email
+      phoneNumber
+      partySize
+      specialRequest
+      reservationDate
+    }
+  }
+}
+query variables
+{
+  "reservation": {
+    "customerName": "John",
+    "email": "John@email.com",
+    "phoneNumber": "0016035551212",
+    "partySize": 5,
+    "specialRequest": "Book a corner table with window view",
+    "reservationDate": "2025-07-04"
   }
 }
 ```
