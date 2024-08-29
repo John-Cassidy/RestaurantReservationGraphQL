@@ -140,4 +140,21 @@ query {
     }
   }
 }
+
+query {
+  categoryQuery{
+    categories{
+      id
+      name
+      imageUrl
+      menus{
+        id
+        name
+        description
+        price
+        imageUrl
+      }
+    }
+  }
+}
 ```
