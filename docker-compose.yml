@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  restaurantdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: restaurantdb
+    hostname: restaurantdb
+    environment:
+      MSSQL_SA_PASSWORD: 'Admin_1234'
+      MSSQL_PID: 'Developer'
+      ACCEPT_EULA: 'Y'
+    restart: always
+    ports:
+      - '1433:1433'

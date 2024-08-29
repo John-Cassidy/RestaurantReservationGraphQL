@@ -81,3 +81,12 @@ query variable
   "menuId":6
 }
 ```
+
+## SQL Server Docker Container
+
+```powershell
+# NOTE: START CONTAINERS FROM EXISTING IMAGES WITHOUT REBUILDING
+docker compose -f docker-compose.yml up -d
+# NOTE: STOP RUNNING CONTAINERS AND REMOVE CONTAINERS
+docker compose -f docker-compose.yml down
+```
